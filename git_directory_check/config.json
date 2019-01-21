@@ -1,0 +1,9 @@
+{
+    "default_root_path": "D:\\ZRQWork\\",
+    "ignore_paths": [
+        "====设计图",
+        "DevelopmentTools",
+        "JianGuoYunFolder",
+        "ZfCmdl\\.metadata"
+    ]
+}

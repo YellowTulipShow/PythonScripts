@@ -5,6 +5,13 @@ import json
 from subprocess import Popen, PIPE
 
 # yellowtulipshow dev code:
+
+def read_config_json_file():
+    f = open("config.json", encoding='utf-8')
+    return json.load(f);
+# 读取 json 配置文件
+c = read_config_json_file();
+
 def is_window_path(path):
     return re.match(r"[a-zA-Z]:\\.*", path) != None
 
@@ -15,60 +22,76 @@ def to_window_path(path):
     son_path = re.sub(r"\\+", "/", str(r[1]))
     return "/{}/{}".format(drive_letter, son_path)
 
-# RadoRado dev code:
+def get_root_path():
+    # 自定义的默认的目录地址
+    root = c["default_root_path"]
+    if not root:
+        # 获取当前目录地址
+        root = os.getcwd()
+    if len(sys.argv) > 1:
+        root = sys.argv[1]
+    # if is_window_path(root):
+    #     root = to_window_path(root)
+    return root;
+
 def is_git_directory(root):
     if os.path.isfile(root):
         return False
     return ".git" in os.listdir(root)
 
 # start program:
-
-# 获取当前目录地址
-root = os.getcwd()
-
-# 自定义的默认的目录地址, 后期可以考虑读取 json 配置文件
-root = "D:\\ZRQWork\\"
-
-if len(sys.argv) > 1:
-    root = sys.argv[1]
-
-# if is_window_path(root):
-#     root = to_window_path(root)
-
+root = get_root_path()
 print("root:", root)
+
+def is_ignore_path(root):
+    for ignore in c["ignore_paths"]:
+        if ignore in root:
+            return True
+    return False;
+
+def git_status():
+    return Popen(["git", "status"], stdout=PIPE).communicate()[0].decode("utf-8")
+
+def get_repositories_status_infos(root):
+    print(root)
+    os.chdir(root)
+    info = {
+        "path": root,
+        # "is_need_commit": git_status()
+    }
+    return info
 
 son_count = 0
 def GetAllSonPathGitInfos(root):
     global son_count
     status_infos = []
     if os.path.isfile(root):
-        return status_infos;
+        return status_infos
+
     if ".git" in os.listdir(root):
         info = get_repositories_status_infos(root)
-        status_infos.append(info);
-        return status_infos;
+        status_infos.append(info)
+        return status_infos
+
     # 当前路径不是 git 存储库
     folders = os.listdir(root)
     for folder in folders:
         path = os.path.join(root, folder)
-        print("path:", path)
-        son_count+=1;
+
+        if is_ignore_path(path):
+            continue
+        print(path)
+
         silist = GetAllSonPathGitInfos(path)
         if len(silist) > 0:
             for i in silist:
                 status_infos.append(i)
     return status_infos
 
-def get_repositories_status_infos(root):
-    info = {
-        "path": root,
-        "is_need_commit": False,
-    }
-    return info
 
 status_infos = GetAllSonPathGitInfos(root)
-for info in status_infos:
-    print(info)
+# for info in status_infos:
+#     print(info)
 print("son_count:", son_count)
 
 # # RadoRado dev code:
