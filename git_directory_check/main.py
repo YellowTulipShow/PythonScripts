@@ -121,11 +121,16 @@ def font_red(str_text):
     # http://www.cnblogs.com/ping-y/p/5897018.html
     return "\033[1;31m{}\033[0m".format(str_text)
 
+def font_green(str_text):
+    return "\033[1;32m{}\033[0m".format(str_text)
+
 def print_list_infos(infos):
     for info in infos:
         print("path: {}".format(font_red(info["path"])))
         print("out: \n{}".format(info["out"]))
         print("-" * 80 + "\n")
+
+not_need_show_info = True
 
 # 开始执行程序:
 for root in get_root_paths():
@@ -137,5 +142,12 @@ for root in get_root_paths():
     # 筛选过滤需要展示的仓库信息
     need_show_info = filter_infos(rep_infos)
 
+    if len(need_show_info) > 0:
+        not_need_show_info = False;
+
     # 打印仓库信息
     print_list_infos(need_show_info)
+
+if not_need_show_info:
+    print(font_green("\nAll warehouses are very clean... ok!\n"))
+    print("-" * 80 + "\n")
