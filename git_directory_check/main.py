@@ -4,10 +4,10 @@ import re
 import json
 from subprocess import Popen, PIPE
 
-# yellowtulipshow dev code:
-
 def read_config_json_file():
-    f = open("config.json", encoding='utf-8')
+    t = os.path.split(sys.argv[0])
+    cp = os.path.join(t[0], "config.json")
+    f = open(cp, encoding='utf-8')
     return json.load(f);
 
 # 读取 json 配置文件
@@ -39,9 +39,6 @@ def exe_command(str_command):
         "out": out.decode("utf-8"),
     }
     return j
-
-def git_status():
-    return
 
 def get_repositories_status_info(root):
     os.chdir(root)
@@ -100,7 +97,7 @@ def print_list_infos(infos):
         print("out: \n{}".format(info["out"]))
         print("-" * 80 + "\n")
 
-# start program:
+# 开始执行程序:
 for root in get_root_paths():
     rep_infos = []
 
