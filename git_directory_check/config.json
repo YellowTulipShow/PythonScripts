@@ -1,12 +1,11 @@
 {
     "def_check_paths": [
         "D:\\ZRQWork\\",
-        "D:\\ZRQWorkQ\\"
+        "D:\\Work"
     ],
     "ignore_paths": [
-        "====设计图",
         "DevelopmentTools",
         "JianGuoYunFolder",
-        "ZfCmdl\\.metadata"
+        ".metadata"
     ]
 }

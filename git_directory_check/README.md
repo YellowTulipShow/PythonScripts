@@ -18,11 +18,12 @@ $ python main.py [path]
 {
     "def_check_paths": [
         "D:\\ZRQWork\\",
+        "D:\\Work",
     ],
     "ignore_paths": [
         "DevelopmentTools",
         "JianGuoYunFolder",
-        "ZfCmdl\\.metadata"
+        ".metadata",
     ]
 }
 ```
