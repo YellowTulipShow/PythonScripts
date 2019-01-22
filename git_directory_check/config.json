@@ -1,5 +1,8 @@
 {
-    "default_root_path": "D:\\ZRQWork\\",
+    "def_check_paths": [
+        "D:\\ZRQWork\\",
+        "D:\\ZRQWorkQ\\"
+    ],
     "ignore_paths": [
         "====设计图",
         "DevelopmentTools",
