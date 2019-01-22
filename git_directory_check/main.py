@@ -2,6 +2,7 @@ import sys
 import os
 import re
 import json
+import platform
 from subprocess import Popen, PIPE
 
 def read_config_json_file():
@@ -13,6 +14,16 @@ def read_config_json_file():
 # 读取 json 配置文件
 c = read_config_json_file();
 
+def is_window_path(path):
+    return re.match(r"[a-zA-Z]:\\.*", path) != None
+
+def to_linux_path(window_path):
+    m = re.compile(r"([a-zA-Z]):\\(.*)", re.I | re.M | re.U)
+    r = m.findall(window_path)[0]
+    drive_letter = r[0]
+    son_path = re.sub(r"\\+", "/", str(r[1]))
+    return "/{}/{}".format(drive_letter, son_path)
+
 def get_root_paths():
     roots = c["def_check_paths"]
 
@@ -20,7 +31,8 @@ def get_root_paths():
         roots.append(os.getcwd())
 
     if len(sys.argv) > 1:
-        roots = [sys.argv[1]];
+        arg_path = sys.argv[1]
+        roots = [arg_path];
 
     return roots;
 
@@ -42,8 +54,11 @@ def exe_command(str_command):
 
 def get_repositories_status_info(root):
     os.chdir(root)
+    path = root
+    if platform.system() == "Windows" and is_window_path(path):
+        path = to_linux_path(path)
     info = {
-        "path": root,
+        "path": path,
         "out": exe_command("git status")["out"],
     }
     return info
@@ -51,6 +66,9 @@ def get_repositories_status_info(root):
 def get_all_git_repositories(root):
     rep_infos = []
     if os.path.isfile(root):
+        return rep_infos
+
+    if not os.path.isdir(root):
         return rep_infos
 
     if ".git" in os.listdir(root):
@@ -70,6 +88,7 @@ def get_all_git_repositories(root):
         if len(silist) > 0:
             for i in silist:
                 rep_infos.append(i)
+
     return rep_infos
 
 def filter_infos(infos):
@@ -85,6 +104,7 @@ def filter_infos(infos):
             if code in info["out"]:
                 rinfos.append(info)
                 break
+
     return rinfos
 
 def font_red(str_text):
@@ -101,18 +121,11 @@ def print_list_infos(infos):
 for root in get_root_paths():
     rep_infos = []
 
-    try:
-        # 获取目录下所有仓库信息
-        rep_infos = get_all_git_repositories(root)
+    # 获取目录下所有仓库信息
+    rep_infos = get_all_git_repositories(root)
 
-    except Exception as e:
-        print("root: {} Error! continue...".format(root))
-        print("-" * 80 + "\n")
-        continue
+    # 筛选过滤需要展示的仓库信息
+    need_show_info = filter_infos(rep_infos)
 
-    else:
-        # 筛选过滤需要展示的仓库信息
-        need_show_info = filter_infos(rep_infos)
-
-        # 打印仓库信息
-        print_list_infos(need_show_info)
+    # 打印仓库信息
+    print_list_infos(need_show_info)
