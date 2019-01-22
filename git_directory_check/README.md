@@ -31,6 +31,21 @@ $ python main.py [path]
 
 `ignore_paths` 参数为: 遍历递归循环过程中, 子路径中如果出现这些字符串就忽略执行, 同时注意 `window` 路径的间隔平台执行 路径使用 `window` 格式
 
+## 方便使用
+在 `shell` 中添加一个命令别名, 以便于使用, 在 `window` 平台下建议直接使用 `git bash` 命令行使用
+
+再 `~/.bashrc` 文件加入一行:
+```shell
+alias gitdc='python /D/ZRQWork/YTS.ZRQ/PythonScripts/git_directory_check/main.py'
+```
+
+之后再 `shell` 中就可以直接使用命令了
+
+```shell
+$ gitdc
+```
+
+
 ## 参考学习地址
 ```shell
 # RadoRado 的 git检查脚本, 功能基本实现
