@@ -7,9 +7,29 @@
 这里使用 `Python` 脚本再执行这些工作, 开发与测试使用的版本是 `Python 3.6.2`, 其他版本请自行测试
 
 ## 使用:
+```shell
+$ python main.py [path]
+```
 
+`path` 参数可选, 如果不指定就采用 相对路径的 `./config.json` 内容路径进行检查
 
+`config.json` 文件格式如下:
+```json
+{
+    "def_check_paths": [
+        "D:\\ZRQWork\\",
+    ],
+    "ignore_paths": [
+        "DevelopmentTools",
+        "JianGuoYunFolder",
+        "ZfCmdl\\.metadata"
+    ]
+}
+```
 
+`def_check_paths` 参数为: 默认的检查路径, 已数组形式写入多个
+
+`ignore_paths` 参数为: 遍历递归循环过程中, 子路径中如果出现这些字符串就忽略执行, 同时注意 `window` 路径的间隔平台执行 路径使用 `window` 格式
 
 ## 参考学习地址
 ```shell
