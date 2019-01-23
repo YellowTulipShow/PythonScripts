@@ -105,7 +105,8 @@ def filter_infos(infos):
     status_codes = [
         "Changes not staged for commit:",
         "Changes to be committed:",
-        "(use \"git push\" to publish your local commits)"
+        "(use \"git push\" to publish your local commits)",
+        "Untracked files:"
     ]
 
     rinfos = []
