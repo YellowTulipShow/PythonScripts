@@ -79,7 +79,7 @@ def get_all_git_repositories(root):
         return rep_infos
 
     if not os.path.isdir(root):
-        return rep_infos
+        raise TypeError("Root path not isfile and not isdir, ERROR!")
 
     if ".git" in os.listdir(root):
         info = get_repositories_status_info(root)
@@ -118,6 +118,8 @@ def filter_infos(infos):
 
     return rinfos
 
+def font_black(str_text):
+    return "\033[1;30m{}\033[0m".format(str_text)
 def font_red(str_text):
     # http://www.cnblogs.com/ping-y/p/5897018.html
     return "\033[1;31m{}\033[0m".format(str_text)
@@ -125,29 +127,67 @@ def font_red(str_text):
 def font_green(str_text):
     return "\033[1;32m{}\033[0m".format(str_text)
 
+def font_yellow(str_text):
+    return "\033[1;33m{}\033[0m".format(str_text)
+
+def font_blue(str_text):
+    return "\033[1;34m{}\033[0m".format(str_text)
+
+def font_fuchsia(str_text):
+    return "\033[1;35m{}\033[0m".format(str_text)
+
+def font_cyan(str_text):
+    return "\033[1;36m{}\033[0m".format(str_text)
+
+def font_white(str_text):
+    return "\033[1;37m{}\033[0m".format(str_text)
+
+def IntervalLine():
+    print("\n{}\n\n".format("-" * 80), end="")
+
 def print_list_infos(root, infos):
     if len(need_show_info) <= 0:
-        print("\nroot: {}".format(root));
-        print(font_green("All warehouses are very clean... ok!\n"))
+        print("root: {}".format(root));
+        print(font_green("All warehouses are very clean... ok!"))
+        IntervalLine()
         return
 
     for info in infos:
-        print("path: {}".format(font_red(info["path"])))
-        print("out: \n{}".format(info["out"]))
+        url = info["path"].strip("\n")
+        red_url = font_red(url)
+        msg = info["out"].strip("\n")
+        print("path: {}".format(red_url))
+        print("out:\n{}".format(msg))
+        IntervalLine()
+
+def print_exception(root, e):
+    color_root = font_blue(root)
+    color_e = font_blue(e)
+    print("root: {}".format(color_root));
+    print("e: {}".format(color_e));
+    IntervalLine()
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+print("Start find need git operating repositories:")
+IntervalLine()
 
 # 开始执行程序:
 for root in get_root_paths():
     rep_infos = []
 
-    # 获取目录下所有仓库信息
-    rep_infos = get_all_git_repositories(root)
+    try:
+        # 获取目录下所有仓库信息
+        rep_infos = get_all_git_repositories(root)
 
-    # 筛选过滤需要展示的仓库信息
-    need_show_info = filter_infos(rep_infos)
+    except Exception as e:
+        # 打印错误信息
+        print_exception(root, e)
 
-    # 打印仓库信息
-    print_list_infos(root, need_show_info)
+    else:
+        # 筛选过滤需要展示的仓库信息
+        need_show_info = filter_infos(rep_infos)
 
-    print("{}\n".format("-" * 80))
-
-
+        # 打印仓库信息
+        print_list_infos(root, need_show_info)
