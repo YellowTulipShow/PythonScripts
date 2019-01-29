@@ -112,7 +112,10 @@ def filter_infos(infos):
     rinfos = []
     for info in infos:
         for code in status_codes:
-            if code in info["out"]:
+            msg = info["out"]
+            if code in msg:
+                color_code = font_fuchsia(code)
+                info["out"] = msg.replace(code, color_code)
                 rinfos.append(info)
                 break
 
