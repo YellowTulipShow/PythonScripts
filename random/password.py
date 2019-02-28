@@ -2,7 +2,6 @@
 import random
 
 sl = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
-print(sl)
 
 ## 输出 ASCII 常用字符编码表
 # for i in range(0, len(sl)):
@@ -12,4 +11,5 @@ sl = [ c for c in sl]
 rl = random.randint(11, 19)
 sl = random.sample(sl, rl)
 sl = ''.join(sl)
-print("pwd:|  {}  |{}位".format(sl, len(sl)))
+
+print("{}  位数:{}\n".format(sl, len(sl)))
