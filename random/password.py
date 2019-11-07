@@ -1,23 +1,20 @@
 # coding: UTF-8
+
 import random
+import sys
 
-nmin = 11
-mmax = 19
+sys.path.append('../Tools')
+import char
 
-sl = '!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+def GetString(max_length, min_length = 1, char_string = ''):
+    if not char_string or char_string is '':
+        char_string = char.ASCII_ALL()
+    clist = char.ToChars(char_string)
+    index = random.randint(min_length, max_length)
+    clist = random.sample(clist, index)
+    return ''.join(clist)
 
-sl = '0123456789'
-sl += 'abcdefghijklmnopqrstuvwxyz'
-# sl += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-# sl += '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-
-## 输出 ASCII 常用字符编码表
-# for i in range(0, len(sl)):
-#     print("i:", i+33, "c:", sl[i])
-
-sl = [ c for c in sl]
-rl = random.randint(nmin, mmax)
-sl = random.sample(sl, rl)
-sl = ''.join(sl)
-
-print("{}  位数:{}\n".format(sl, len(sl)))
+if __name__ == '__main__':
+    value = GetString(min_length = 15, max_length = 18)
+    print("位数:", len(value))
+    print("值:\n\t", value, '\n')

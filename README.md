@@ -15,3 +15,6 @@
 
 ### number
 关于数学, 数字的东西在这里面
+
+## 参考学习链接:
+* [Python中的random模块](https://www.cnblogs.com/yd1227/archive/2011/03/18/1988015.html)
