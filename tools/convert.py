@@ -26,7 +26,6 @@ def __test_trim():
     print('trimStart: "{str}"'.format(str=trimStart(test_str_trim, symbol=r'14%@')))
     print('trimEnd: "{str}"'.format(str=trimEnd(test_str_trim, symbol=r'14%@')))
     print('trim: "{str}"'.format(str=trim(test_str_trim)))
-    pass
 
 def copy_dict(dict_old, dict_new):
     r = dict_old
