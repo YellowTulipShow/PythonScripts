@@ -32,7 +32,11 @@ def copy_dict(dict_old, dict_new):
     for key in dict_new:
         v = dict_new[key]
         if 'dict' in str(type(v)):
-            r[key] = copy_dict({}, v)
+            ov = r.get(key, None)
+            if ov:
+                r[key] = copy_dict(ov, v)
+            else:
+                r[key] = copy_dict({}, v)
         else:
             r[key] = v
     return r
@@ -42,6 +46,9 @@ def __test_copy_dict():
     dict_new = {
         'a': 1,
         'b': 2,
+        'c': {
+            'e': 555,
+        }
     }
     copy_dict(dict_old, dict_new)
     print(dict_old)
@@ -56,6 +63,9 @@ def __test_copy_dict():
     print(dict_old)
     dict_new = {
         'a': 5,
+        'c': {
+            'e': 666,
+        },
     }
     copy_dict(dict_old, dict_new)
     print(dict_old)
