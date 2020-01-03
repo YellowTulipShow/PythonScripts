@@ -1,13 +1,15 @@
  # coding: UTF-8
 
-import sys
-import os
 import json
 import re
 import datetime
 import platform
 
-sys.path.append('.')
+import sys, os
+# impath = os.path.abspath('.')
+# print(impath)
+# sys.path.append(impath)
+
 import convert
 
 def to_abs_directory(relatice_directory):
@@ -38,6 +40,8 @@ def file_read(abs_path):
     return content
 
 def file_write(abs_path, content):
+    file_dir = os.path.split(abs_path)[0]
+    to_abs_directory(file_dir)
     f = open(abs_path, 'w', encoding='utf-8')
     f.write(content)
     f.close()
