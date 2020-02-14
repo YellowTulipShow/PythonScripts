@@ -12,6 +12,29 @@ import sys, os
 
 import convert
 
+def get_all_file_paths(root, ignores=[]):
+    file_paths = []
+    if os.path.isfile(root):
+        file_paths.append(root)
+        return file_paths
+    if not os.path.isdir(root):
+        return file_paths
+    folders = os.listdir(root)
+    def is_ignore(folder):
+        if ignores == None or len(ignores) <= 0:
+            return False
+        for ig in ignores:
+            if re.search(ig, folder):
+                return True
+        return False
+    for folder in folders:
+        if is_ignore(folder):
+            continue
+        path = os.path.join(root, folder)
+        son_paths = get_all_file_paths(path)
+        file_paths.extend(son_paths)
+    return file_paths
+
 def to_abs_directory(relatice_directory):
     abs_path = os.path.abspath(relatice_directory)
     if not os.path.exists(abs_path):
