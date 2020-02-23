@@ -4,13 +4,28 @@ import json
 import re
 import datetime
 import platform
-
-import sys, os
-# impath = os.path.abspath('.')
-# print(impath)
-# sys.path.append(impath)
+import sys
+import os
 
 import convert
+
+def get_program_path():
+    self_program_path = sys.argv[0]
+    (self_program_dir, self_program_file) = os.path.split(self_program_path)
+    return self_program_dir
+
+def read_program_config(file_name, default_config_dict):
+    self_program_dir = get_program_path();
+    config_file_path = to_abs_path(self_program_dir, file_name)
+    if not os.path.isfile(config_file_path):
+        config_json_file_write(config_file_path, config_dict)
+    return config_json_file_read(config_file_path)
+
+def read_program_config_DevelopToRelease(release_file_name, develop_file_name):
+    self_program_dir = get_program_path();
+    develop_file_path = to_abs_path(self_program_dir, develop_file_name)
+    develop_file_content = config_json_file_read(develop_file_path)
+    return read_program_config(release_file_name, develop_file_content)
 
 def get_all_file_paths(root, ignores=[]):
     file_paths = []
@@ -89,14 +104,3 @@ def config_json_file_read(abs_path):
 def config_json_file_write(abs_path, dict):
     content = json.dumps(dict, indent=4, ensure_ascii=False, cls=DateEncoder)
     return file_write(abs_path, content)
-
-def __test_config_json_file():
-    path = to_abs_path('../config', 'databases.json')
-    content = config_json_file_read(path)
-    print(content)
-    path = to_abs_path('../__auto__/config', 'databases.json')
-    path = config_json_file_write(path, content)
-    print(path)
-
-if __name__ == '__main__':
-    __test_config_json_file()
