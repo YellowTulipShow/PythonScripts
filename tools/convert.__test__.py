@@ -83,10 +83,14 @@ def __test_fill_template():
         'varr': [1,2,3],
     }
     dict_result = convert.fill_template(dict_template, dict_source)
-    print('填充数值:', dict_result['vint'] == dict_source['vint'])
+    print('填充数值:',
+        dict_result['vint'] == dict_source['vint'],
+        dict_result['vint'] != dict_template['vint'])
     print('填充字符串:', dict_result['vstr'] == 'qqq')
     dict_result['varr'].append(5)
-    print('填充数组:', len(dict_result['varr']) != len(dict_source['varr']))
+    print('填充数组:',
+        len(dict_result['varr']) != len(dict_source['varr']),
+        len(dict_result['varr']) == 5)
 
 if __name__ == '__main__':
     __test_trim()

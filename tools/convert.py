@@ -35,8 +35,16 @@ def copy_dict(dict_old, dict_new):
 def fill_template(dict_template, dict_source):
     r = copy.deepcopy(dict_template)
     for key in r:
-        v = dict_source.get(key, None)
-        if not v:
+        sv = dict_source.get(key, None)
+        if not sv:
             continue
-        r[key] = copy.deepcopy(v)
+        nv = copy.deepcopy(sv)
+        rv = copy.deepcopy(r[key])
+        if 'dict' in str(type(rv)):
+            rv = copy_dict(rv, nv)
+        elif 'list' in str(type(rv)):
+            rv.extend(nv)
+        else:
+            rv = nv
+        r[key] = rv
     return r
