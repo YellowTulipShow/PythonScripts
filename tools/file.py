@@ -18,7 +18,7 @@ def read_program_config(file_name, default_config_dict):
     self_program_dir = get_program_path();
     config_file_path = to_abs_path(self_program_dir, file_name)
     if not os.path.isfile(config_file_path):
-        config_json_file_write(config_file_path, config_dict)
+        config_json_file_write(config_file_path, default_config_dict)
     return config_json_file_read(config_file_path)
 
 def read_program_config_DevelopToRelease(release_file_name, develop_file_name):
@@ -27,7 +27,20 @@ def read_program_config_DevelopToRelease(release_file_name, develop_file_name):
     develop_file_content = config_json_file_read(develop_file_path)
     return read_program_config(release_file_name, develop_file_content)
 
-def get_all_file_paths(root, is_ignore=None):
+def read_program_file(file_name, default_file_content):
+    self_program_dir = get_program_path();
+    file_path = to_abs_path(self_program_dir, file_name)
+    if not os.path.isfile(file_path):
+        file_write(file_path, default_file_content)
+    return file_read(file_path)
+
+def read_program_file_DevelopToRelease(release_file_name, develop_file_name):
+    self_program_dir = get_program_path();
+    develop_file_path = to_abs_path(self_program_dir, develop_file_name)
+    develop_file_content = file_read(develop_file_path)
+    return read_program_file(release_file_name, develop_file_content)
+
+def recursive_route(root, is_ignore=None):
     def default_is_ignore(folder):
         return True
     if not is_ignore:
@@ -44,7 +57,7 @@ def get_all_file_paths(root, is_ignore=None):
         path = path.replace('\\', '/')
         if is_ignore(path):
             continue
-        son_paths = get_all_file_paths(path, is_ignore=is_ignore)
+        son_paths = recursive_route(path, is_ignore=is_ignore)
         file_paths.extend(son_paths)
     return file_paths
 
